@@ -1549,7 +1549,7 @@
                         <h3>Wholesale Inquiry</h3>
                         <p>Tell us about your business and what you're looking for.</p>
                     </div>
-                    <form action="mailto:zach.wcd@gmail.com" method="post" enctype="text/plain">
+                    <form id="contact-form">
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="name">Your Name</label>
@@ -1641,6 +1641,44 @@
                     window.scrollTo({ top: pos, behavior: 'smooth' });
                 }
             });
+        });
+
+        // Contact form handling
+        const contactForm = document.getElementById('contact-form');
+        const submitBtn = contactForm.querySelector('.submit-btn');
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const company = document.getElementById('company').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            // Build email body
+            const subject = `Wholesale Inquiry from ${company}`;
+            const body = `Name: ${name}
+Company: ${company}
+Email: ${email}
+Phone: ${phone || 'Not provided'}
+
+Message:
+${message || 'No message provided'}`;
+
+            // Open email client
+            const mailtoLink = `mailto:zach.wcd@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+
+            // Show success state
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Opening Email...';
+            submitBtn.style.background = 'var(--sage-500)';
+
+            setTimeout(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.style.background = '';
+            }, 3000);
         });
     </script>
 </body>
